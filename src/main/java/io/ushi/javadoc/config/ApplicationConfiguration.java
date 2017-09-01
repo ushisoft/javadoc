@@ -1,6 +1,5 @@
 package io.ushi.javadoc.config;
 
-import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;

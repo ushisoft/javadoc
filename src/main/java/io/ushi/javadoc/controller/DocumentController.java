@@ -23,6 +23,13 @@ public class DocumentController {
     @Autowired
     DocumentRepository documentRepository;
 
+    @RequestMapping(value = "/document/{id}", method = RequestMethod.GET)
+    public Document document(@PathVariable("id") Long documentId) {
+
+        // insert data by h2-console
+        return documentRepository.findDocument(documentId);
+    }
+
     @RequestMapping(value = "/group/{gid}/artifacts", method = RequestMethod.GET)
     public List<Document> artifacts(@PathVariable("gid") String groupId) {
 
