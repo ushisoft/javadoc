@@ -1,8 +1,11 @@
 package io.ushi.javadoc.config;
 
 import liquibase.integration.spring.SpringLiquibase;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 
@@ -14,11 +17,16 @@ import javax.sql.DataSource;
 @Configuration
 public class ApplicationConfiguration {
 
+    /**
+     * 显式定义Datasource只为Idea中不会提示有多个Datasource的错误-_-
+     *
+     * @return
+     */
     @Bean
-    public SpringLiquibase liquibase(DataSource dataSource) {
-        SpringLiquibase liquibase = new SpringLiquibase();
-        liquibase.setChangeLog("classpath:db/changelog/db.changelog-master.xml");
-        liquibase.setDataSource(dataSource);
-        return liquibase;
+    @Primary
+    @ConfigurationProperties(prefix = "spring.datasource")
+    public DataSource dataSource() {
+        return DataSourceBuilder.create().build();
     }
+
 }
