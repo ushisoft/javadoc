@@ -1,14 +1,15 @@
 package io.ushi.javadoc.controller;
 
+import io.ushi.javadoc.domain.Document;
+import io.ushi.javadoc.repositories.DocumentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Doc主页控制类
@@ -17,24 +18,16 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/doc")
-public class DocController {
+public class DocumentController {
+
+    @Autowired
+    DocumentRepository documentRepository;
 
     @RequestMapping(value = "/group/{gid}/artifacts", method = RequestMethod.GET)
-    public List<String> artifacts(@PathVariable("gid") String groupId) {
+    public List<Document> artifacts(@PathVariable("gid") String groupId) {
 
-        List<String> g1 = new ArrayList<String>();
-        g1.add("A");
-        g1.add("B");
-
-        List<String> g2 = new ArrayList<String>();
-        g2.add("C");
-        g2.add("D");
-
-        Map<String, List<String>> mock = new HashMap<String, List<String>>();
-        mock.put("org.springframework", g1);
-        mock.put("com.qjdchina", g2);
-
-        return mock.get(groupId);
+        // insert data by h2-console
+        return documentRepository.findByGroupId(groupId);
     }
 
     @RequestMapping(value = "/group/{gid}/artifact/{aid}/versions", method = RequestMethod.GET)

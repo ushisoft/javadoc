@@ -1,11 +1,21 @@
-package io.ushi.javadoc.model;
+package io.ushi.javadoc.domain;
+
+import com.google.common.base.MoreObjects;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
- * Maven包
- *
  * Created by zhouleibo on 2017/8/30.
  */
+@Entity
 public class Document {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     String groupId;
 
@@ -35,5 +45,15 @@ public class Document {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("groupId", groupId)
+                .add("artifactId", artifactId)
+                .add("version", version)
+                .toString();
     }
 }

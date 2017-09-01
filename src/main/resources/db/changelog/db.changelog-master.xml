@@ -5,9 +5,11 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.7
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.7.xsd">
     <changeSet id="quartz_tables_h2" author="zhouleibo" dbms="h2">
-        <sqlFile encoding="utf8"
-                 path="db/changelog/sql/quartz_tables_h2.sql"
-                 splitStatements="true"
-                 stripComments="true"/>
+        <sqlFile path="db/changelog/sql/quartz_tables_h2.sql"
+                 encoding="utf8" splitStatements="true" stripComments="true"/>
+    </changeSet>
+    <changeSet id="javadoc_tables_h2" author="zhouleibo" dbms="h2">
+        <sqlFile path="db/changelog/sql/javadoc_tables_h2.sql"
+                 encoding="utf8" splitStatements="true" stripComments="true"/>
     </changeSet>
 </databaseChangeLog>
