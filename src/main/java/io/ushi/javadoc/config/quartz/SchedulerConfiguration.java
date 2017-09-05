@@ -1,9 +1,7 @@
 package io.ushi.javadoc.config.quartz;
 
-import liquibase.integration.spring.SpringLiquibase;
 import org.quartz.Trigger;
 import org.quartz.spi.JobFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
@@ -12,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
-import javax.sql.DataSource;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -25,15 +23,8 @@ import java.util.Properties;
 @ConditionalOnProperty(name = "quartz.enabled")
 public class SchedulerConfiguration {
 
-    /**
-     * 注入SpringLiquibase是为了确保liquibase已完成初始化并完成quartz相关数据库表的创建
-     *
-     * @param applicationContext
-     * @param liquibase
-     * @return
-     */
     @Bean
-    public JobFactory jobFactory(ApplicationContext applicationContext, SpringLiquibase liquibase) {
+    public JobFactory jobFactory(ApplicationContext applicationContext) {
         AutowiringSpringBeanJobFactory jobFactory = new AutowiringSpringBeanJobFactory();
         jobFactory.setApplicationContext(applicationContext);
         return jobFactory;
@@ -41,17 +32,14 @@ public class SchedulerConfiguration {
 
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean(
-            DataSource dataSource, JobFactory jobFactory,
-            @Qualifier("documentCollectJobTrigger") Trigger documentCollectJobTrigger) throws IOException {
+            JobFactory jobFactory, ApplicationContext applicationContext) throws IOException {
 
         SchedulerFactoryBean factory = new SchedulerFactoryBean();
-        // this allows to update triggers in DB when updating settings in config file:
-        factory.setOverwriteExistingJobs(true);
-        factory.setDataSource(dataSource);
         factory.setJobFactory(jobFactory);
-
         factory.setQuartzProperties(quartzProperties());
-        factory.setTriggers(documentCollectJobTrigger);
+        // add all triggers in context
+        Map<String, Trigger> beansOfTrigger = applicationContext.getBeansOfType(Trigger.class);
+        factory.setTriggers(beansOfTrigger.values().toArray(new Trigger[0]));
 
         return factory;
     }

@@ -1,18 +1,14 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:test
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
   profiles:
     active: dev
-  h2:
-    console:
-      enabled: true
+  data:
+    mongodb:
+      database: javadoc
+      host: localhost
+      port: 27017
+      password:
+      repositories:
+        enabled: true
+
 quartz:
   enabled: true
-
-liquibase:
-  enabled: true
-  change-log: classpath:db/changelog/db.changelog-master.xml
-

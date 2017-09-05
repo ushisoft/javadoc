@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import javax.sql.DataSource;
 
@@ -15,7 +15,7 @@ import javax.sql.DataSource;
  * Created by zhouleibo on 2017/9/1.
  */
 @Configuration
-@EnableJpaRepositories(basePackages = "io.ushi.javadoc.repositories")
+@EnableMongoRepositories(basePackages = "io.ushi.javadoc.repository")
 public class ApplicationConfiguration {
 
     /**

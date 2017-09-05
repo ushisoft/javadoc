@@ -15,14 +15,12 @@ import org.springframework.scheduling.quartz.JobDetailFactoryBean;
  */
 @Configuration
 @ConditionalOnProperty(name = "quartz.enabled")
-public class DocumentCollectJobTriggerConfiguration {
+public class DocumentCollectJobConfiguration {
 
     @Bean(name = "documentCollectJobDetail")
     public JobDetailFactoryBean documentCollectJobDetail() {
         JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
         factoryBean.setJobClass(DocumentCollectJob.class);
-        // job has to be durable to be stored in DB:
-        factoryBean.setDurability(true);
         return factoryBean;
     }
 

@@ -1,27 +1,22 @@
-package io.ushi.javadoc.domain;
+package io.ushi.javadoc.domain.mongo;
 
 import com.google.common.base.MoreObjects;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.springframework.data.annotation.Id;
 
 /**
- * Created by zhouleibo on 2017/8/30.
+ * Created by zhouleibo on 2017/9/5.
  */
-@Entity
+@org.springframework.data.mongodb.core.mapping.Document
 public class Document {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
 
-    String groupId;
+    private String groupId;
 
-    String artifactId;
+    private String artifactId;
 
-    String version;
+    private String version;
 
     public String getGroupId() {
         return groupId;

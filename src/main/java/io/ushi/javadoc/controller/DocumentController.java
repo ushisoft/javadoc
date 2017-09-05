@@ -1,7 +1,7 @@
 package io.ushi.javadoc.controller;
 
-import io.ushi.javadoc.domain.Document;
-import io.ushi.javadoc.repositories.DocumentRepository;
+import io.ushi.javadoc.domain.mongo.Document;
+import io.ushi.javadoc.repository.mongo.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,14 +26,12 @@ public class DocumentController {
     @RequestMapping(value = "/document/{id}", method = RequestMethod.GET)
     public Document document(@PathVariable("id") Long documentId) {
 
-        // insert data by h2-console
-        return documentRepository.findDocument(documentId);
+        return documentRepository.findOne(documentId);
     }
 
     @RequestMapping(value = "/group/{gid}/artifacts", method = RequestMethod.GET)
     public List<Document> artifacts(@PathVariable("gid") String groupId) {
 
-        // insert data by h2-console
         return documentRepository.findByGroupId(groupId);
     }
 
