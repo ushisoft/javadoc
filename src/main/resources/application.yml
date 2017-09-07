@@ -11,4 +11,10 @@ spring:
         enabled: true
 
 quartz:
-  enabled: true
+  enabled: false
+
+ushi:
+  nexus:
+    url: http://nexus.qjdchina.com/nexus/
+  javadoc:
+    output: /tmp/javadoc/

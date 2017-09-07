@@ -1,15 +1,20 @@
 package io.ushi.javadoc.controller;
 
-import io.ushi.javadoc.domain.mongo.Document;
-import io.ushi.javadoc.repository.mongo.DocumentRepository;
+import io.ushi.javadoc.domain.Document;
+import io.ushi.javadoc.repository.DocumentRepository;
+import io.ushi.javadoc.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Future;
 
 /**
  * Doc主页控制类
@@ -23,10 +28,14 @@ public class DocumentController {
     @Autowired
     DocumentRepository documentRepository;
 
-    @RequestMapping(value = "/document/{id}", method = RequestMethod.GET)
-    public Document document(@PathVariable("id") Long documentId) {
+    @Autowired
+    DocumentService documentService;
 
-        return documentRepository.findOne(documentId);
+    @RequestMapping(value = "/init")
+    @Async
+    public Future<String> nexusLookup() throws IOException {
+        documentService.nexusLookup();
+        return new AsyncResult<>("init start...");
     }
 
     @RequestMapping(value = "/group/{gid}/artifacts", method = RequestMethod.GET)

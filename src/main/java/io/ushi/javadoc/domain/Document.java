@@ -1,4 +1,4 @@
-package io.ushi.javadoc.domain.mongo;
+package io.ushi.javadoc.domain;
 
 import com.google.common.base.MoreObjects;
 import org.springframework.data.annotation.Id;
@@ -17,6 +17,14 @@ public class Document {
     private String artifactId;
 
     private String version;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getGroupId() {
         return groupId;
