@@ -4,6 +4,7 @@ import io.ushi.javadoc.config.JavadocProperties;
 import io.ushi.javadoc.config.NexusProperties;
 import io.ushi.javadoc.domain.Document;
 import io.ushi.javadoc.repository.DocumentRepository;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class DocumentService {
         logger.info("Hello World!");
     }
 
-    public void nexusLookup() throws IOException {
+    public void fetchAll() throws IOException {
 
         // find javadoc list from nexus
         List<Document> allJavadoc = nexusService.findAllJavadoc();
@@ -77,6 +78,16 @@ public class DocumentService {
         }
 
         logger.info("nexus lookup end.");
+    }
+
+    public void fetchOne(Document document) throws IOException {
+
+        File artifactPath = new File(javadocProperties.getOutput(), makePath(document));
+        FileUtils.deleteDirectory(artifactPath);
+        artifactPath.mkdirs();
+
+        resolve(document, artifactPath);
+        save(document);
     }
 
     private void resolve(Document document, File destination) throws IOException {

@@ -22,7 +22,7 @@ public class DocumentCollectJob implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
         try {
-            documentService.nexusLookup();
+            documentService.fetchAll();
         } catch (IOException e) {
             logger.error("", e);
         }

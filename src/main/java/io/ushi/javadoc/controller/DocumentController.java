@@ -6,10 +6,7 @@ import io.ushi.javadoc.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,8 +31,18 @@ public class DocumentController {
     @RequestMapping(value = "/init")
     @Async
     public Future<String> nexusLookup() throws IOException {
-        documentService.nexusLookup();
+        documentService.fetchAll();
         return new AsyncResult<>("init start...");
+    }
+
+    @RequestMapping(value = "/fetch")
+    public void fetchOne(@RequestParam("g") String groupId, @RequestParam("a") String artifactId,
+                         @RequestParam("v") String version) throws IOException {
+        Document document = new Document();
+        document.setGroupId(groupId);
+        document.setArtifactId(artifactId);
+        document.setVersion(version);
+        documentService.fetchOne(document);
     }
 
     @RequestMapping(value = "/group/{gid}/artifacts", method = RequestMethod.GET)
