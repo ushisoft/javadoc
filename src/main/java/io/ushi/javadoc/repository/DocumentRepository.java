@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * Created by zhouleibo on 2017/9/5.
  */
-public interface DocumentRepository extends MongoRepository<Document, String> {
+public interface DocumentRepository extends MongoRepository<Document, String>, DocumentRepositoryCustom {
 
-    List<Document> findByGroupId(String groupId);
+    List<Document> findByGroupIdAndArtifactId(String groupId, String artifactId);
 
 }

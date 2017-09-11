@@ -22,14 +22,17 @@ import java.util.concurrent.Future;
 @RequestMapping("/doc")
 public class DocumentController {
 
+    /**
+     * 示例比较简单，所以直接注入Repository
+     */
     @Autowired
     DocumentRepository documentRepository;
 
     @Autowired
     DocumentService documentService;
 
-    @RequestMapping(value = "/init")
     @Async
+    @RequestMapping(value = "/init")
     public Future<String> nexusLookup() throws IOException {
         documentService.fetchAll();
         return new AsyncResult<>("init start...");
@@ -45,23 +48,18 @@ public class DocumentController {
         documentService.fetchOne(document);
     }
 
-    @RequestMapping(value = "/group/{gid}/artifacts", method = RequestMethod.GET)
-    public List<Document> artifacts(@PathVariable("gid") String groupId) {
+    @RequestMapping(value = "/groups", method = RequestMethod.GET)
+    public List groups() {
+        return documentRepository.distinctGroupIds();
+    }
 
-        return documentRepository.findByGroupId(groupId);
+    @RequestMapping(value = "/group/{gid}/artifacts", method = RequestMethod.GET)
+    public List artifacts(@PathVariable("gid") String groupId) {
+        return documentRepository.distinctArtifacts(groupId);
     }
 
     @RequestMapping(value = "/group/{gid}/artifact/{aid}/versions", method = RequestMethod.GET)
-    public List<String> versions(@PathVariable("gid") String groupId, @PathVariable("aid") String artifactId) {
-
-        List<String> g1 = new ArrayList<String>();
-        g1.add("E");
-        g1.add("F");
-
-        List<String> g2 = new ArrayList<String>();
-        g2.add("G");
-        g2.add("H");
-
-        return artifactId.equals("common") ? g1 : g2;
+    public List<Document> versions(@PathVariable("gid") String groupId, @PathVariable("aid") String artifactId) {
+        return documentRepository.findByGroupIdAndArtifactId(groupId, artifactId);
     }
 }
