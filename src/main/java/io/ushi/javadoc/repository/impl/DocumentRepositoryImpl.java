@@ -22,8 +22,7 @@ public class DocumentRepositoryImpl implements DocumentRepositoryCustom {
 
     @Override
     public List distinctArtifacts(String groupId) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("groupId").is(groupId));
+        Query query = Query.query(Criteria.where("groupId").is(groupId));
         return mongoTemplate.getCollection(COLLECTION_NAME)
                 .distinct("artifactId", query.getQueryObject());
     }
